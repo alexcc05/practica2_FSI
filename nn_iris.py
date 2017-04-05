@@ -56,7 +56,7 @@ print "----------------------"
 
 batch_size = 20
 
-for epoch in xrange(100):
+for epoch in xrange(10000):
     for jj in xrange(len(x_data) / batch_size):
         batch_xs = x_data[jj * batch_size: jj * batch_size + batch_size]
         batch_ys = y_data[jj * batch_size: jj * batch_size + batch_size]

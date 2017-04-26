@@ -102,12 +102,7 @@ for epoch in xrange(epoca):
 
     print "----------------------------------------------------------------------------------"
 
-#Porcentaje aciertos
-correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_, 1))
-#se pasa la lista a num y se halla la media
-accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))*100
 
-print(sess.run(accuracy, feed_dict={x: x_test, y_: y_test}))
 
 plt.plot(array2)
 plt.show()

@@ -102,23 +102,16 @@ for epoch in xrange(10):  #numero epocas
         break
 
     ulterror = error
+    #Test del entreno
+
+    # etiquetaprobable vs etiqueta real
+    # dev lista booleanos
     correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
     # se pasa la lista a num y se halla la media
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     final = sess.run(accuracy, feed_dict={x: test_x, y_: test_y})
     print(final)
     array2.append((final,error))
-
-#etiquetaprobable vs etiqueta real
-#dev lista booleanos
-
-correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
-# se pasa la lista a num y se halla la media
-accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-
-print(sess.run(accuracy, feed_dict={x: test_x, y_: test_y}))
-
-    #Test del entreno
 
 
 

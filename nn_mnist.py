@@ -37,8 +37,9 @@ test_y = one_hot(test_y,10)
 
 # ---------------- Visualizing some element of the MNIST dataset --------------
 
-#import matplotlib.cm as cm
-#import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+import matplotlib.pyplot as plt
+array = []
 
 #plt.imshow(train_x[57].reshape((28, 28)), cmap=cm.Greys_r)
 #plt.show()  # Let's see a sample
@@ -60,9 +61,10 @@ h = tf.nn.sigmoid(tf.matmul(x, W1) + b1)
 # h = tf.matmul(x, W1) + b1  # Try this!
 y = tf.nn.softmax(tf.matmul(h, W2) + b2) #implementacion modelo
 
-loss = tf.reduce_sum(tf.square(y_ - y))
+#loss = tf.reduce_sum(tf.square(y_ - y))
+loss = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
 
-train = tf.train.GradientDescentOptimizer(0.01).minimize(loss)  # learning rate: 0.01
+train = tf.train.GradientDescentOptimizer(0.5).minimize(loss)  # learning rate: 0.01
 
 
 sess = tf.InteractiveSession()
@@ -73,8 +75,11 @@ print "   Start training...  "
 print "----------------------"
 
 batch_size = 20
+#entreno
+ulterror = 1000
+limit = 0.001
 
-for epoch in xrange(85):  #numero epocas
+for epoch in xrange(10):  #numero epocas
     for jj in xrange(len(train_x) / batch_size):
         batch_xs = train_x[jj * batch_size: jj * batch_size + batch_size]
         batch_ys =train_y[jj * batch_size: jj * batch_size + batch_size]
@@ -86,8 +91,20 @@ for epoch in xrange(85):  #numero epocas
         #print b, "-->", r
     print "----------------------------------------------------------------------------------"
 
+    error = sess.run(loss, feed_dict={x: valid_x, y_: valid_y})
+    array.append(error)
+    if abs(error - ulterror) < limit:
+        break
+
+    ulterror = error
+
+    #Test del entreno
+
 correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_, 1))
 
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 print(sess.run(accuracy, feed_dict={x: test_x, y_: test_y}))
+
+plt.plot(array)
+plt.show()

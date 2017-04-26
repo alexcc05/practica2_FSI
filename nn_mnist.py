@@ -82,6 +82,7 @@ batch_size = 20
 #entreno
 ulterror = 1000
 limit = 0.001
+array2 = []
 
 for epoch in xrange(10):  #numero epocas
     for jj in xrange(len(train_x) / batch_size):
@@ -96,22 +97,29 @@ for epoch in xrange(10):  #numero epocas
     print "----------------------------------------------------------------------------------"
 
     error = sess.run(loss, feed_dict={x: valid_x, y_: valid_y})
-    array.append(error)
+    #array.append(error)
     if abs(error - ulterror) < limit:
         break
 
     ulterror = error
+    correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
+    # se pasa la lista a num y se halla la media
+    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+    final = sess.run(accuracy, feed_dict={x: test_x, y_: test_y})
+    print(final)
+    array2.append((final,error))
+
+correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
+# se pasa la lista a num y se halla la media
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+
+print(sess.run(accuracy, feed_dict={x: test_x, y_: test_y}))
 
     #Test del entreno
 
 #etiquetaprobable vs etiqueta real
 #dev lista booleanos
 
-correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_, 1))
-#se pasa la lista a num y se halla la media
-accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-print(sess.run(accuracy, feed_dict={x: test_x, y_: test_y}))
-
-plt.plot(array)
+plt.plot(array2)
 plt.show()

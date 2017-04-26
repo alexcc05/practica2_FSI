@@ -25,7 +25,7 @@ f = gzip.open('mnist.pkl.gz', 'rb')
 train_set, valid_set, test_set = cPickle.load(f)
 f.close()
 
-#Conjunto de entreno, validación y test
+#Conjunto de entreno, validacion y test
 train_x, train_y = train_set
 valid_x, valid_y = valid_set
 test_x, test_y = test_set
@@ -65,7 +65,7 @@ h = tf.nn.sigmoid(tf.matmul(x, W1) + b1)
 y = tf.nn.softmax(tf.matmul(h, W2) + b2) #implementacion  asignar prob #Evidencia de que es un num---< probabilidad
 #lista valores entre 0-1 +1
 #tf.log---calcular log de cada elemento de y
-#t.reduce añade los elementos de la segunda # dim de y
+#t.reduce anade los elementos de la segunda  dim de y
 loss = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
 
 train = tf.train.GradientDescentOptimizer(0.5).minimize(loss)  # learning rate: 0.01

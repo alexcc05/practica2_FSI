@@ -25,6 +25,7 @@ f = gzip.open('mnist.pkl.gz', 'rb')
 train_set, valid_set, test_set = cPickle.load(f)
 f.close()
 
+#Conjunto de entreno, validación y test
 train_x, train_y = train_set
 valid_x, valid_y = valid_set
 test_x, test_y = test_set
@@ -49,19 +50,22 @@ array = []
 # TODO: the neural net!!
 #se crea el modelo
 x = tf.placeholder("float", [None, 784])  # samples
-y_ = tf.placeholder("float", [None, 10])  # labels
+y_ = tf.placeholder("float", [None, 10])  # labels-- respuestas correctas
 
-W1 = tf.Variable(np.float32(np.random.rand(28*28,100)) * 0.1)
-b1 = tf.Variable(np.float32(np.random.rand(100)) * 0.1)
+#variable=tensor
+
+W1 = tf.Variable(np.float32(np.random.rand(28*28,100)) * 0.1) #pesos
+b1 = tf.Variable(np.float32(np.random.rand(100)) * 0.1) #bias
 
 W2 = tf.Variable(np.float32(np.random.rand(100,10)) * 0.1)
 b2 = tf.Variable(np.float32(np.random.rand(10)) * 0.1)
 
 h = tf.nn.sigmoid(tf.matmul(x, W1) + b1)
 # h = tf.matmul(x, W1) + b1  # Try this!
-y = tf.nn.softmax(tf.matmul(h, W2) + b2) #implementacion modelo
-
-#loss = tf.reduce_sum(tf.square(y_ - y))
+y = tf.nn.softmax(tf.matmul(h, W2) + b2) #implementacion  asignar prob #Evidencia de que es un num---< probabilidad
+#lista valores entre 0-1 +1
+#tf.log---calcular log de cada elemento de y
+#t.reduce añade los elementos de la segunda # dim de y
 loss = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
 
 train = tf.train.GradientDescentOptimizer(0.5).minimize(loss)  # learning rate: 0.01
@@ -100,8 +104,11 @@ for epoch in xrange(10):  #numero epocas
 
     #Test del entreno
 
-correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_, 1))
+#etiquetaprobable vs etiqueta real
+#dev lista booleanos
 
+correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_, 1))
+#se pasa la lista a num y se halla la media
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 print(sess.run(accuracy, feed_dict={x: test_x, y_: test_y}))

@@ -83,8 +83,9 @@ batch_size = 20
 ulterror = 1000
 limit = 0.001
 array2 = []
-
-for epoch in xrange(10):  #numero epocas
+epoch=0
+while 1:  #numero epocas
+    epoch+=1
     for jj in xrange(len(train_x) / batch_size):
         batch_xs = train_x[jj * batch_size: jj * batch_size + batch_size]
         batch_ys =train_y[jj * batch_size: jj * batch_size + batch_size]

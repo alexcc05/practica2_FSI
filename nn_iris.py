@@ -69,18 +69,18 @@ print "----------------------"
 batch_size = 20
 ulterror = 100
 limit = 0.000000000000001
-epoca = 100
+epoca = 0
 
 
-for epoch in xrange(epoca):
+while 1:
 
-
+    epoca+=1
     for jj in xrange(len(x_train) / batch_size):
         batch_xs = x_train[jj * batch_size: jj * batch_size + batch_size]
         batch_ys = y_train[jj * batch_size: jj * batch_size + batch_size]
         sess.run(train, feed_dict={x: batch_xs, y_: batch_ys})
 
-    print "Epoch #:", epoch, "Error: ", sess.run(loss, feed_dict={x: batch_xs, y_: batch_ys})
+    print "Epoch #:", epoca, "Error: ", sess.run(loss, feed_dict={x: batch_xs, y_: batch_ys})
     result = sess.run(y, feed_dict={x: batch_xs})
     #for b, r in zip(batch_ys, result):
       #  print b, "-->", r
